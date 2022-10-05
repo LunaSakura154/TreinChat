@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -189,11 +190,16 @@ namespace Treinchat.Models
     {
         public Root root;
 
+        public Treinchat.Arrivals.Arrivals arrival;
+
         public string currentStation;
         public string nextStation;
+        public string nextStationLong;
         public string finalStation;
         public string finalStationLong;
         public string trainType;
+
+        public bool connecti = false;
         private void Start()
         {
             GetInformation();
@@ -201,11 +207,18 @@ namespace Treinchat.Models
         public async void GetInformation()
         {
             HttpClient httpClient = new HttpClient();
-            //var result = await httpClient.GetAsync("http://portal.nstrein.ns.nl/nstrein:main/travelInfo");
-            var result = File.ReadAllText(@"C:\Users\super\OneDrive\Documenten\Unity\TreinChat\Assets\Test.txt");
-            var data = JsonConvert.DeserializeObject<Root>(result);
-            //var data = JsonConvert.DeserializeObject<Root>(await result.Content.ReadAsStringAsync());
+            ////Real
+            var result = await httpClient.GetAsync("http://portal.nstrein.ns.nl/nstrein:main/travelInfo");
+            var data = JsonConvert.DeserializeObject<Root>(await result.Content.ReadAsStringAsync());
+            ////Testing
+            //var result = File.ReadAllText(@"C:\Users\super\OneDrive\Documenten\Unity\TreinChat\Assets\Test.txt");
+            //var data = JsonConvert.DeserializeObject<Root>(result);
             root = data;
+
+            if (root != null)
+            {
+                connecti = true;
+            }
             Debug.Log("Information Requested");
             SetInformation();
         }
@@ -216,8 +229,29 @@ namespace Treinchat.Models
             nextStation = root.nextStation;
             finalStation = root.finalDestination.code;
             finalStationLong = root.finalDestination.languages.nl.longName;
-            trainType = root.trip.trainTypeFull; 
+            trainType = root.trip.trainTypeFull;
+            CheckName(nextStation);
+            arrival.CheckArrivalAsync(finalStation);
         }
+
+
+        public void CheckName(string code)
+        {
+            for (int i = 0; i < root.trip.stops.Count; i++)
+            {
+                if (root.trip.stops[i].station.code == code)
+                {
+                    nextStationLong = root.trip.stops[i].station.languages.nl.longName;
+                    Debug.Log($"{root.trip.stops[i].station.languages.nl.longName} was found");
+                }
+                else
+                {
+                    Debug.Log($"{root.trip.stops[i].station.languages.nl.longName} was not found");
+                }
+            }
+        }
+
+        
     }
 }
 
