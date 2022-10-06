@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public Arrivals arrivals;
 
     public TextMeshProUGUI cur;
+    public TextMeshProUGUI curL;
     public TextMeshProUGUI next;
     public TextMeshProUGUI nextL;
     public TextMeshProUGUI final;
@@ -26,12 +27,21 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         cur.text = models.currentStation;
+        curL.text = models.currentStationLong;
         next.text = models.nextStation;
         nextL.text = models.nextStationLong;
         final.text = models.finalStation;
         finalL.text = models.finalStationLong;
         train.text = models.trainType;
-        trainNum.text = arrivals.trainNum.ToString();
+
+        if (arrivals.trainNum == 0)
+        {
+            trainNum.text = "Ritnummer nog niet gevonden. Een moment AUB";
+        }
+        else
+        {
+            trainNum.text = arrivals.trainNum.ToString();
+        }
 
         if (models.connecti)
         {

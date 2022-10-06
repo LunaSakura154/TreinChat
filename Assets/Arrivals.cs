@@ -104,7 +104,6 @@ namespace Treinchat.Arrivals
             var data = JsonConvert.DeserializeObject<Root>(await response.Content.ReadAsStringAsync());
             root = data;
 
-            Debug.Log(root.payload.arrivals[0].origin);
 
             SetArrival();
         }
@@ -129,6 +128,7 @@ namespace Treinchat.Arrivals
                 if (planTime == parsed)
                 {
                     trainNum = int.Parse(root.payload.arrivals[i].product.number);
+                    Debug.Log(root.payload.arrivals[i].origin);
                 }
 
                 //trainNum = int.Parse(root.payload.arrivals[0].product.number);

@@ -193,6 +193,7 @@ namespace Treinchat.Models
         public Treinchat.Arrivals.Arrivals arrival;
 
         public string currentStation;
+        public string currentStationLong;
         public string nextStation;
         public string nextStationLong;
         public string finalStation;
@@ -231,6 +232,7 @@ namespace Treinchat.Models
             finalStationLong = root.finalDestination.languages.nl.longName;
             trainType = root.trip.trainTypeFull;
             CheckName(nextStation);
+            CheckNameCur(currentStation);
             arrival.CheckArrivalAsync(finalStation);
         }
 
@@ -250,8 +252,23 @@ namespace Treinchat.Models
                 }
             }
         }
+        public void CheckNameCur(string code)
+        {
+            for (int i = 0; i < root.trip.stops.Count; i++)
+            {
+                if (root.trip.stops[i].station.code == code)
+                {
+                    currentStationLong = root.trip.stops[i].station.languages.nl.longName;
+                    Debug.Log($"{root.trip.stops[i].station.languages.nl.longName} was found");
+                }
+                else
+                {
+                    Debug.Log($"{root.trip.stops[i].station.languages.nl.longName} was not found");
+                }
+            }
+        }
 
-        
+
     }
 }
 
