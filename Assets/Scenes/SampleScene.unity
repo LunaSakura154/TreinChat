@@ -481,7 +481,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1918621417}
         m_TargetAssemblyTypeName: Treinchat.Models.Models, Assembly-CSharp
-        m_MethodName: GetInformation
+        m_MethodName: Refresh
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -925,6 +925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c57f45ddcc075c14682d3b799f360852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 1918621420}
   models: {fileID: 1918621417}
   arrivals: {fileID: 1918621419}
   cur: {fileID: 1822994756}
@@ -939,6 +940,8 @@ MonoBehaviour:
   notConnected: Trein niet gevonden. Dubbelcheck of u bent verbonden met "Wifi in
     de Trein"
   connected: Verbonden
+  notFound: Ritnummer niet gevonden
+  searching: Ritnummer aan het opvragen
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,8 +1774,9 @@ GameObject:
   - component: {fileID: 1918621418}
   - component: {fileID: 1918621417}
   - component: {fileID: 1918621419}
+  - component: {fileID: 1918621420}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1790,6 +1794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7868dd3c1e3667478d0cdf5d45144dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 1918621420}
   arrival: {fileID: 1918621419}
   currentStation: 
   currentStationLong: 
@@ -1826,9 +1831,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5ef0c24e816044daba1795cc0c14bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 1918621420}
   models: {fileID: 1918621417}
   arrivalStation: 
   trainNum: 0
+--- !u!114 &1918621420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918621416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 552e7a37cfe27cd47a76d9fdec6a3d2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchingNumber: 0
 --- !u!1 &1960065946
 GameObject:
   m_ObjectHideFlags: 0

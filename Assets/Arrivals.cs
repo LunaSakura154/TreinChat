@@ -6,7 +6,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Web;
 using UnityEngine;
-
+using Treinchat;
+using System.Threading.Tasks;
 // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
 
 namespace Treinchat.Arrivals
@@ -75,12 +76,14 @@ namespace Treinchat.Arrivals
 
     public class Arrivals : MonoBehaviour
     {
+        public Manager manager;
         public Treinchat.Models.Models models;
         public Root root;
         public string arrivalStation;
         public DateTime arrivalTime;
-        public async void CheckArrivalAsync(string code)
+        public async Task CheckArrivalAsync(string code)
         {
+            manager.searchingNumber = true;
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
@@ -105,12 +108,12 @@ namespace Treinchat.Arrivals
             root = data;
 
 
-            SetArrival();
+            await SetArrival();
         }
 
         public int trainNum;
 
-        public void SetArrival()
+        public async Task SetArrival()
         {
             for (int i = 0; i < root.payload.arrivals.Count; i++)
             {
@@ -133,6 +136,7 @@ namespace Treinchat.Arrivals
 
                 //trainNum = int.Parse(root.payload.arrivals[0].product.number);
             }
+            manager.searchingNumber = false;
         }
     }
 

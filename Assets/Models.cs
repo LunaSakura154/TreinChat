@@ -188,6 +188,8 @@ namespace Treinchat.Models
     }
     public class Models : MonoBehaviour
     {
+        public Manager manager;
+
         public Root root;
 
         public Treinchat.Arrivals.Arrivals arrival;
@@ -201,11 +203,17 @@ namespace Treinchat.Models
         public string trainType;
 
         public bool connecti = false;
+
         private void Start()
         {
             GetInformation();
         }
-        public async void GetInformation()
+
+        public void Refresh()
+        {
+            GetInformation();
+        }
+        public async Task GetInformation()
         {
             HttpClient httpClient = new HttpClient();
             ////Real
@@ -221,10 +229,10 @@ namespace Treinchat.Models
                 connecti = true;
             }
             Debug.Log("Information Requested");
-            SetInformation();
+            await SetInformation();
         }
 
-        public void SetInformation()
+        public async Task SetInformation()
         {
             currentStation = root.currentStation;
             nextStation = root.nextStation;
@@ -233,7 +241,7 @@ namespace Treinchat.Models
             trainType = root.trip.trainTypeFull;
             CheckName(nextStation);
             CheckNameCur(currentStation);
-            arrival.CheckArrivalAsync(finalStation);
+            await arrival.CheckArrivalAsync(finalStation);
         }
 
 

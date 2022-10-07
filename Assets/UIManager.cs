@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Treinchat;
 using Treinchat.Models;
 using Treinchat.Arrivals;
 
 public class UIManager : MonoBehaviour
 {
+    public Manager manager;
     public Models models;
     public Arrivals arrivals;
 
@@ -24,6 +26,10 @@ public class UIManager : MonoBehaviour
     public string notConnected;
     public string connected;
 
+    [Header("Ritnummer")]
+    public string notFound;
+    public string searching;
+
     private void Update()
     {
         cur.text = models.currentStation;
@@ -33,14 +39,20 @@ public class UIManager : MonoBehaviour
         final.text = models.finalStation;
         finalL.text = models.finalStationLong;
         train.text = models.trainType;
-
-        if (arrivals.trainNum == 0)
+        if (!manager.searchingNumber)
         {
-            trainNum.text = "Ritnummer nog niet gevonden. Een moment AUB";
+            if (arrivals.trainNum == 0)
+            {
+                trainNum.text = notFound;
+            }
+            else
+            {
+                trainNum.text = arrivals.trainNum.ToString();
+            }
         }
         else
         {
-            trainNum.text = arrivals.trainNum.ToString();
+            trainNum.text = searching;
         }
 
         if (models.connecti)
