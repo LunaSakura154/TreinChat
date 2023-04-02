@@ -123,6 +123,20 @@ namespace Treinchat.Models
         public Trip trip { get; set; }
         public List<Transfer> transfer { get; set; }
         public Disturbances disturbances { get; set; }
+        public Records records { get; set; }
+    }
+
+    public class Records
+    {
+        public string currentStation { get; set; }
+        public string nextStation { get; set; }
+        public string splitCombineContent { get; set; }
+        public bool displayTravelInformation { get; set; }
+        public FinalDestination finalDestination { get; set; }
+        public int phase { get; set; }
+        public Trip trip { get; set; }
+        public List<Transfer> transfer { get; set; }
+        public Disturbances disturbances { get; set; }
     }
 
     public class Station
@@ -209,6 +223,12 @@ namespace Treinchat.Models
             GetInformation();
         }
 
+        public void Testing()
+        {
+            TestRequest();
+        }
+
+
         public void Refresh()
         {
             GetInformation();
@@ -242,6 +262,7 @@ namespace Treinchat.Models
             CheckName(nextStation);
             CheckNameCur(currentStation);
             await arrival.CheckArrivalAsync(finalStation);
+            //await arrival.CheckArrivalAsync("UT");
         }
 
 
@@ -256,7 +277,7 @@ namespace Treinchat.Models
                 }
                 else
                 {
-                    Debug.Log($"{root.trip.stops[i].station.languages.nl.longName} was not found");
+                    //Debug.Log($"{root.trip.stops[i].station.languages.nl.longName} was not found");
                 }
             }
         }
@@ -271,9 +292,24 @@ namespace Treinchat.Models
                 }
                 else
                 {
-                    Debug.Log($"{root.trip.stops[i].station.languages.nl.longName} was not found");
+                    //Debug.Log($"{root.trip.stops[i].station.languages.nl.longName} was not found");
                 }
             }
+        }
+
+        public async Task TestRequest()
+        {
+            HttpClient httpClient = new HttpClient();
+            //var result = await httpClient.GetAsync("https://www.jsonkeeper.com/b/U1Y0");
+            var result = await httpClient.GetAsync("https://www.jsonkeeper.com/b/PCP7");
+            var data = JsonConvert.DeserializeObject<Root>(await result.Content.ReadAsStringAsync());
+
+            root = data;
+            Debug.Log("testing");
+            await SetInformation();
+
+
+            //arrival.TestArrival(finalStation);
         }
 
 

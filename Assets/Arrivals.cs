@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Web;
 using UnityEngine;
+using UnityEngine.Networking;
 using Treinchat;
 using System.Threading.Tasks;
 // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
@@ -78,17 +79,23 @@ namespace Treinchat.Arrivals
     {
         public Manager manager;
         public Treinchat.Models.Models models;
+        public Treinchat.Journey.Journey journey;
         public Root root;
         public string arrivalStation;
         public DateTime arrivalTime;
+
+        public void TestArrival(string code)
+        {
+            CheckArrivalAsync(code);
+        }
         public async Task CheckArrivalAsync(string code)
         {
             manager.searchingNumber = true;
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-
+            #region
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "deb7cfed900c43cca32d0efe53d35d5e");
-
+            #endregion
             // Request parameters
             //queryString["lang"] = "{string}";
             queryString["station"] = code;
@@ -115,6 +122,10 @@ namespace Treinchat.Arrivals
 
         public async Task SetArrival()
         {
+            if (root != null)
+            {
+                trainNum = int.Parse(root.payload.arrivals[0].product.number);
+            }
             for (int i = 0; i < root.payload.arrivals.Count; i++)
             {
                 var planTime = root.payload.arrivals[i].plannedDateTime;
@@ -134,9 +145,9 @@ namespace Treinchat.Arrivals
                     Debug.Log(root.payload.arrivals[i].origin);
                 }
 
-                //trainNum = int.Parse(root.payload.arrivals[0].product.number);
             }
             manager.searchingNumber = false;
+            journey.JourneyRequest(trainNum);
         }
     }
 
